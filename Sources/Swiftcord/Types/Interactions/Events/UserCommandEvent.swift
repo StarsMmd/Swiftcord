@@ -15,7 +15,7 @@ public class UserCommandEvent: InteractionEvent {
 
     public let name: String
 
-    public let swiftcord: Swiftcord
+    public let swiftcord: SwiftcordClient
 
     public let token: String
 
@@ -38,7 +38,7 @@ public class UserCommandEvent: InteractionEvent {
 
     public var isDefered: Bool
 
-    init(_ swiftcord: Swiftcord, data: [String: Any]) {
+    init(_ swiftcord: SwiftcordClient, data: [String: Any]) {
         self.swiftcord = swiftcord
         self.token = data["token"] as! String
         self.guildId = Snowflake(data["guild_id"] as! String)!

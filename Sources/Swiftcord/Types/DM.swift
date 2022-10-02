@@ -12,7 +12,7 @@ public struct DM: TextChannel {
     // MARK: Properties
 
     /// Parent class
-    public internal(set) weak var swiftcord: Swiftcord?
+    public internal(set) weak var swiftcord: SwiftcordClient?
 
     /// ID of DM
     public let id: Snowflake
@@ -34,7 +34,7 @@ public struct DM: TextChannel {
      - parameter swiftcord: Parent class
      - parameter json: JSON representable as a dictionary
      */
-    init(_ swiftcord: Swiftcord, _ json: [String: Any]) {
+    init(_ swiftcord: SwiftcordClient, _ json: [String: Any]) {
         self.swiftcord = swiftcord
 
         self.id = Snowflake(json["id"])!

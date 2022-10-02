@@ -55,7 +55,7 @@ class Shard: Gateway {
     let shardCount: Int
 
     /// Parent class
-    unowned let swiftcord: Swiftcord
+    unowned let swiftcord: SwiftcordClient
 
     /// Number of missed heartbeat ACKs
     var acksMissed = 0
@@ -70,7 +70,7 @@ class Shard: Gateway {
      - parameter id: ID of the current shard
      - parameter shardCount: Total number of shards bot needs to be connected to
      */
-    init(_ swiftcord: Swiftcord, _ id: Int, _ shardCount: Int, _ gatewayUrl: String, eventLoopGroup: EventLoopGroup?) {
+    init(_ swiftcord: SwiftcordClient, _ id: Int, _ shardCount: Int, _ gatewayUrl: String, eventLoopGroup: EventLoopGroup?) {
         self.swiftcord = swiftcord
         self.id = id
         self.shardCount = shardCount

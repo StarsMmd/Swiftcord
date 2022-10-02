@@ -45,7 +45,7 @@ public struct ScheduledEvent {
     public let status: ScheduledEvent.Status
 
     // MARK: Initializers
-    init(_ swiftcord: Swiftcord, _ json: [String: Any]) {
+    init(_ swiftcord: SwiftcordClient, _ json: [String: Any]) {
         if let channelId = json["channel_id"] as? String {
             self.channelId = Snowflake(channelId)!
         } else {

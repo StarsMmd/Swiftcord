@@ -14,7 +14,7 @@ public struct User: Imageable {
     // MARK: Properties
 
     /// Parent class
-    public internal(set) weak var swiftcord: Swiftcord?
+    public internal(set) weak var swiftcord: SwiftcordClient?
 
     /// Avatar hash
     public let avatar: String?
@@ -48,7 +48,7 @@ public struct User: Imageable {
      - parameter swiftcord: Parent class to get properties from
      - parameter json: JSON to decode into User struct
      */
-    init(_ swiftcord: Swiftcord, _ json: [String: Any]) {
+    init(_ swiftcord: SwiftcordClient, _ json: [String: Any]) {
         self.swiftcord = swiftcord
 
         self.avatar = json["avatar"] as? String

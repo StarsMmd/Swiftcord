@@ -18,7 +18,7 @@ class ShardManager {
     var eventLoopGroup: EventLoopGroup?
 
     /// Parent Swiftcord class
-    weak var swiftcord: Swiftcord?
+    weak var swiftcord: SwiftcordClient?
     
     init(eventLoopGroup: EventLoopGroup?) {
         self.eventLoopGroup = eventLoopGroup

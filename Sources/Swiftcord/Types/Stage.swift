@@ -10,7 +10,7 @@ import Foundation
 /// Represents a Stage instance inside a Stage Channel
 public struct Stage {
     /// Main class
-    public let swiftcord: Swiftcord
+    public let swiftcord: SwiftcordClient
 
     /// ID of the stage channel
     public let channelID: Snowflake
@@ -31,7 +31,7 @@ public struct Stage {
     /// Topic of the stage channel
     public let topic: String
 
-    init(_ swiftcord: Swiftcord, data: [String: Any]) {
+    init(_ swiftcord: SwiftcordClient, data: [String: Any]) {
         self.swiftcord = swiftcord
 
         self.channelID = Snowflake(data["channel_id"])!

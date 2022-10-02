@@ -51,7 +51,7 @@ public class ThreadChannel: TextChannel, GuildChannel, Updatable {
     // MARK: Properties
 
     /// Parent class
-    public weak var swiftcord: Swiftcord?
+    public weak var swiftcord: SwiftcordClient?
 
     public let archiveTimestamp: Date?
 
@@ -111,7 +111,7 @@ public class ThreadChannel: TextChannel, GuildChannel, Updatable {
      - parameter swiftcord: Parent class
      - parameter json: JSON represented as a dictionary
      */
-    init(_ swiftcord: Swiftcord, _ json: [String: Any]) {
+    init(_ swiftcord: SwiftcordClient, _ json: [String: Any]) {
         self.swiftcord = swiftcord
 
         if let threadMetaData = json["thread_metadata"] as? [String: Any] {

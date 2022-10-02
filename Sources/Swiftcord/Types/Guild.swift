@@ -13,7 +13,7 @@ public class Guild: Updatable, Imageable {
     // MARK: Properties
 
     /// Parent class
-    public weak var swiftcord: Swiftcord?
+    public weak var swiftcord: SwiftcordClient?
 
     /// ID of afk voice channel (if there is any)
     public var afkChannelId: Snowflake?
@@ -111,7 +111,7 @@ public class Guild: Updatable, Imageable {
      - parameter json: JSON representable as a dictionary
      - parameter shard: Shard ID this guild is handled by
      */
-    init(_ swiftcord: Swiftcord, _ json: [String: Any], _ shard: Int? = nil) {
+    init(_ swiftcord: SwiftcordClient, _ json: [String: Any], _ shard: Int? = nil) {
         self.swiftcord = swiftcord
 
         self.id = Snowflake(json["id"])!

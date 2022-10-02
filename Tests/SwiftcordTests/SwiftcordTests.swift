@@ -30,8 +30,8 @@ final class SwiftCordTests: XCTestCase {
     }
     
     /// Sets up the `Swiftcord` object needed across functions
-    func setUpBot() -> Swiftcord {
-        let bot = Swiftcord(token: "")
+    func setUpBot() -> SwiftcordClient {
+        let bot = SwiftcordClient(token: "")
         bot.setIntents(intents: .guildMessages)
         
         let activity = Activities(name: "WiiLink Championships", type: .competing)

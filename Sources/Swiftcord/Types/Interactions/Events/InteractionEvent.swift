@@ -9,7 +9,7 @@ import Foundation
 
 public protocol InteractionEvent: AnyObject {
     var interactionId: Snowflake { get }
-    var swiftcord: Swiftcord { get }
+    var swiftcord: SwiftcordClient { get }
     var token: String { get }
     var ephemeral: Int { get set }
     var isDefered: Bool { get set }

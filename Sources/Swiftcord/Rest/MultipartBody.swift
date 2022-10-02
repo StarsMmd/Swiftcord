@@ -15,7 +15,7 @@ import MimeType
 
 
 /// Image Handler
-extension Swiftcord {
+extension SwiftcordClient {
 
     /**
      Creates HTTP Body for file uploads

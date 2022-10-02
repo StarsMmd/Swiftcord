@@ -14,7 +14,7 @@ public protocol Channel {
     // MARK: Properties
 
     /// Parent class
-    var swiftcord: Swiftcord? { get }
+    var swiftcord: SwiftcordClient? { get }
 
     /// The id of the channel
     var id: Snowflake { get }

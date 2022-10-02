@@ -33,7 +33,7 @@ public struct AuditLog {
      - parameter swiftcord: Parent class to give users and webhooks
      - parameter json: Dictionary representation of audit log
      */
-    init(_ swiftcord: Swiftcord, _ json: [String: [Any]]) {
+    init(_ swiftcord: SwiftcordClient, _ json: [String: [Any]]) {
         let entries = json["audit_log_entries"]!
         for entry in entries {
             self.entries.append(AuditLog.Entry(entry as! [String: Any]))

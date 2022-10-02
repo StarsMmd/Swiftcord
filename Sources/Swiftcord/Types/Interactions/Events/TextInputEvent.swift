@@ -11,7 +11,7 @@ public class TextInputEvent: InteractionEvent {
 
     public let interactionId: Snowflake
 
-    public let swiftcord: Swiftcord
+    public let swiftcord: SwiftcordClient
 
     public let token: String
 
@@ -36,7 +36,7 @@ public class TextInputEvent: InteractionEvent {
     
     public var value: String
     
-    init(_ swiftcord: Swiftcord, data: [String: Any]) {
+    init(_ swiftcord: SwiftcordClient, data: [String: Any]) {
         self.swiftcord = swiftcord
         self.token = data["token"] as! String
 

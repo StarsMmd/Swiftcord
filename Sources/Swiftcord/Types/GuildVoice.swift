@@ -11,7 +11,7 @@ public class GuildVoice: GuildChannel, Updatable {
     // MARK: Properties
 
     /// Parent Class
-    public internal(set) weak var swiftcord: Swiftcord?
+    public internal(set) weak var swiftcord: SwiftcordClient?
 
     /// Bitrate (in bits) for channel
     public internal(set) var bitrate: Int?
@@ -59,7 +59,7 @@ public class GuildVoice: GuildChannel, Updatable {
      - parameter swiftcord: Parent class
      - parameter json: JSON represented as a dictionary
      */
-    init(_ swiftcord: Swiftcord, _ json: [String: Any]) {
+    init(_ swiftcord: SwiftcordClient, _ json: [String: Any]) {
         self.swiftcord = swiftcord
 
         self.bitrate = json["bitrate"] as? Int

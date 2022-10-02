@@ -10,7 +10,7 @@ import Foundation
 import Dispatch
 
 /// Rate Limit
-extension Swiftcord {
+extension SwiftcordClient {
 
     /**
      Gets the "route" for an HTTP request

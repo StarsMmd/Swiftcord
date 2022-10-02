@@ -28,7 +28,7 @@ public struct Invite {
      - parameter swiftcord: Used to get references to channel and guild
      - parameter json: Dictionary representation of invite json
      */
-    init(_ swiftcord: Swiftcord, _ json: [String: Any]) {
+    init(_ swiftcord: SwiftcordClient, _ json: [String: Any]) {
         let guild = swiftcord.guilds[
             Snowflake((json["guild"] as! [String: Any])["id"])!
         ]

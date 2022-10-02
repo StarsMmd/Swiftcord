@@ -15,7 +15,7 @@ public class SlashCommandEvent: InteractionEvent {
 
     public let interactionId: Snowflake
 
-    public let swiftcord: Swiftcord
+    public let swiftcord: SwiftcordClient
 
     public let token: String
 
@@ -36,7 +36,7 @@ public class SlashCommandEvent: InteractionEvent {
 
     public var isDefered: Bool
 
-    init(_ swiftcord: Swiftcord, data: [String: Any]) {
+    init(_ swiftcord: SwiftcordClient, data: [String: Any]) {
         // Store the data for later
         self.data = data
 

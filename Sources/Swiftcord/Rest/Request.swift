@@ -20,7 +20,7 @@ extension Encodable {
 }
 
 /// HTTP Handler
-extension Swiftcord {
+extension SwiftcordClient {
 
     /**
      Actual HTTP Request

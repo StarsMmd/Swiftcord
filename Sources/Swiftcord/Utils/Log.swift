@@ -8,7 +8,7 @@
 
 import Logging
 
-extension Swiftcord {
+extension SwiftcordClient {
 
     /**
      Logs the given message

@@ -63,7 +63,7 @@ public struct Member {
      - parameter swiftcord: Parent class to get requester from (and otras properties)
      - parameter json: JSON representable as a dictionary
      */
-    init(_ swiftcord: Swiftcord, _ guild: Guild, _ json: [String: Any]) {
+    init(_ swiftcord: SwiftcordClient, _ guild: Guild, _ json: [String: Any]) {
         self.guild = guild
         self.avatar = json["avatar"] as? String
 

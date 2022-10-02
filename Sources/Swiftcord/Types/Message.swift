@@ -35,7 +35,7 @@ public struct Message {
     public var flags: Int?
 
     /// Main Swiftcord class
-    public let swiftcord: Swiftcord
+    public let swiftcord: SwiftcordClient
 
     /// If sent in a guild, the guild
     public var guild: Guild? {
@@ -90,7 +90,7 @@ public struct Message {
      - parameter swiftcord: Parent class to get guilds from
      - parameter json: JSON representable as a dictionary
      */
-    init(_ swiftcord: Swiftcord, _ json: [String: Any]) {
+    init(_ swiftcord: SwiftcordClient, _ json: [String: Any]) {
         self.swiftcord = swiftcord
         let attachments = json["attachments"] as! [[String: Any]]
         for attachment in attachments {

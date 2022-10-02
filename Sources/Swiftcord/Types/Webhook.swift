@@ -12,7 +12,7 @@ public struct Webhook {
     // MARK: Properties
 
     /// Parent class
-    public internal(set) weak var swiftcord: Swiftcord?
+    public internal(set) weak var swiftcord: SwiftcordClient?
 
     /// Avatar for the webhook in base64
     public let avatar: String?
@@ -43,7 +43,7 @@ public struct Webhook {
      - parameter swiftcord: The parent class
      - parameter json: The data to transform to a webhook
      */
-    init(_ swiftcord: Swiftcord, _ json: [String: Any]) {
+    init(_ swiftcord: SwiftcordClient, _ json: [String: Any]) {
         self.swiftcord = swiftcord
 
         self.avatar = json["avatar"] as? String

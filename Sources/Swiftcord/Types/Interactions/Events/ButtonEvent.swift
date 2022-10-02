@@ -13,7 +13,7 @@ public class ButtonEvent: InteractionEvent {
 
     public let interactionId: Snowflake
 
-    public let swiftcord: Swiftcord
+    public let swiftcord: SwiftcordClient
 
     /// Guild object for this channel
     public var guild: Guild {
@@ -32,7 +32,7 @@ public class ButtonEvent: InteractionEvent {
 
     public var isDefered: Bool
 
-    init(_ swiftcord: Swiftcord, data: [String: Any]) {
+    init(_ swiftcord: SwiftcordClient, data: [String: Any]) {
         self.swiftcord = swiftcord
         self.token = data["token"] as! String
 

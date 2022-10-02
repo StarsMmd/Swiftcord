@@ -19,7 +19,7 @@ import NIO
 
 protocol Gateway: AnyObject {
 
-    var swiftcord: Swiftcord { get }
+    var swiftcord: SwiftcordClient { get }
 
     var acksMissed: Int { get set }
 

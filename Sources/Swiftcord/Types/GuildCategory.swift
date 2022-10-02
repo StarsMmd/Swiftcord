@@ -10,7 +10,7 @@
 public class GuildCategory: GuildChannel {
 
     /// Parent class
-    public weak var swiftcord: Swiftcord?
+    public weak var swiftcord: SwiftcordClient?
 
     /// Channel Category this channel belongs to
     public var category: GuildCategory? {
@@ -53,7 +53,7 @@ public class GuildCategory: GuildChannel {
      - parameter swiftcord: The parent class
      - parameter json: The data to transform to a webhook
      */
-    init(_ swiftcord: Swiftcord, _ json: [String: Any]) {
+    init(_ swiftcord: SwiftcordClient, _ json: [String: Any]) {
         self.swiftcord = swiftcord
 
         self.id = Snowflake(json["id"])!

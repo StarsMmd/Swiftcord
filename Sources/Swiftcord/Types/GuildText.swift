@@ -14,7 +14,7 @@ public class GuildText: GuildChannel, TextChannel, Updatable {
     // MARK: Properties
 
     /// Parent class
-    public internal(set) weak var swiftcord: Swiftcord?
+    public internal(set) weak var swiftcord: SwiftcordClient?
 
     /// Channel Category this channel belongs to
     public var category: GuildCategory? {
@@ -70,7 +70,7 @@ public class GuildText: GuildChannel, TextChannel, Updatable {
      - parameter swiftcord: Parent class
      - parameter json: JSON represented as a dictionary
      */
-    init(_ swiftcord: Swiftcord, _ json: [String: Any]) {
+    init(_ swiftcord: SwiftcordClient, _ json: [String: Any]) {
         self.swiftcord = swiftcord
 
         self.id = Snowflake(json["id"])!
