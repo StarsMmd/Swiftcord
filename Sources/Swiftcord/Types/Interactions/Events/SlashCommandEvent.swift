@@ -30,7 +30,7 @@ public class SlashCommandEvent: InteractionEvent {
 
     public let user: User
 
-    public var options = [SlashCommandEventOptions]()
+    public var options: SlashCommandEventOptions = [:]
 
     public var ephemeral: Int
 
@@ -40,14 +40,28 @@ public class SlashCommandEvent: InteractionEvent {
         // Store the data for later
         self.data = data
 
-        let options = data["data"] as! [String: Any]
+        let optionsData = data["data"] as! [String: Any]
 
-        self.name = options["name"] as! String
+        self.name = optionsData["name"] as! String
+        
+        let resolvedData = optionsData["resolved"] as? [String: Any]
+        let users = (resolvedData?["users"] as? [String: [String: Any]])?.mapValues({ user in
+            User(swiftcord, user)
+        }) ?? [:]
+        let channels = (resolvedData?["channels"] as? [String: [String: Any]])?.mapValues({ channel in
+            GuildText(swiftcord, channel) as Channel
+        }) ?? [:]
+        let roles = (resolvedData?["roles"] as? [String: [String: Any]])?.mapValues({ role in
+            Role(role)
+        }) ?? [:]
+        let attachments = (resolvedData?["attachments"] as? [String: [String: Any]])?.mapValues({ attachment in
+            Attachment(attachment)
+        }) ?? [:]
 
-        if let eventOptions =  options["options"] as? [Any] {
-            for option in eventOptions {
-                self.options.append(SlashCommandEventOptions(data: option as! [String: Any]))
-            }
+        if let options = optionsData["options"] as? [[String: Any]] {
+            self.options = .create(
+                data: options, users: users, channels: channels, roles: roles, attachments: attachments
+            )
         }
 
         self.channelId = Snowflake(data["channel_id"])!
@@ -73,199 +87,170 @@ public class SlashCommandEvent: InteractionEvent {
         }
     }
     
-    public func getOptionAsAttachment(optionName: String) -> Attachment? {
-        let options = self.data["data"] as! [String: Any]
-        var attachment: Attachment?
-        
-        if let optionData = options["resolved"] as! [String: Any]? {
-            for option in self.options {
-                if option.name == optionName {
-                    if option.type == .attatchment {
-                        let id = (options["options"] as! [Any])[0] as! [String:Any]
-                        let data = (optionData["attachments"] as! [String:Any])[id["value"] as! String] as! [String:Any]
-                        attachment = Attachment(data)
-                        break
-                    }
-                }
-            }
-        }
-        
-        return attachment
-    }
-
-    /// Returns the option data as a `Bool`.
-    public func getOptionAsBool(optionName: String) -> Bool? {
-        var bool: Bool?
-
-        for option in self.options {
-            if option.name == optionName {
-                if option.type == .bool {
-                    if option.value == "false" {
-                        bool = false
-                    } else if option.value == "true" {
-                        bool = true
-                    }
-                }
-            }
-        }
-
-        return bool
-    }
-
-    /// Returns the data from the given option in the Channel protocol. The developer must cast this value to the absolute type.
-    public func getOptionAsChannel(optionName: String) -> Channel? {
-        let options = self.data["data"] as! [String: Any]
-
-        // Options can be nil, as such we return an optional value
-        var channel: Channel?
-
-        if let optionData = options["resolved"] as! [String: Any]? {
-            for option in self.options {
-                if option.name == optionName {
-                    if option.type == .channel {
-                        var channelDict = optionData["channels"] as! [String: Any]
-                        channelDict = channelDict[option.value] as! [String: Any]
-                        channel = GuildText(self.swiftcord, channelDict)
-                    } else {
-                        self.swiftcord.warn("The option \(optionName) is not a channel!")
-                    }
-                    break
-                }
-            }
-        }
-
-        return channel
-    }
-
-    /// Returns the option data as a `Double`. Discord considers this type as a `Number`
-    public func getOptionAsDouble(optionName: String) -> Double? {
-        var double: Double?
-
-        for option in self.options {
-            if option.name == optionName {
-                if option.type == .number {
-                    double = Double(option.value)
-                }
-            }
-        }
-
-        return double
-    }
-
-    /// Returns the option data as an `Int`.
-    public func getOptionAsInt(optionName: String) -> Int? {
-        var int: Int?
-
-        for option in self.options {
-            if option.name == optionName {
-                if option.type == .int {
-                    int = Int(option.value)
-                }
-            }
-        }
-
-        return int
-    }
-
-    /// Returns the option data as `Member` object.
-    public func getOptionAsMember(optionName: String) -> Member? {
-        let options = self.data["data"] as! [String: Any]
-
-        var member: Member?
-
-        if let optionData = options["resolved"] as! [String: Any]? {
-            for option in self.options {
-                if option.name == optionName {
-                    if option.type == .user {
-                        var memberDict = optionData["members"] as! [String: Any]
-                        memberDict = memberDict[option.value] as! [String: Any]
-                        member = Member(self.swiftcord, self.swiftcord.getGuild(for: Snowflake(data["channel_id"] as! String)!)!, memberDict)
-                        break
-                    }
-                }
-            }
-        }
-
-        return member
-    }
-
-    /// Returns the option data as a `Role` object.
-    public func getOptionAsRole(optionName: String) -> Role? {
-        let options = self.data["data"] as! [String: Any]
-
-        // Options can be nil, as such we return an optional value
-        var role: Role?
-
-        if let optionData = options["resolved"] as! [String: Any]? {
-            for option in self.options {
-                if option.name == optionName {
-                    if option.type == .role {
-                        var roleDict = optionData["roles"] as! [String: Any]
-                        roleDict = roleDict[option.value] as! [String: Any]
-                        role = Role(roleDict)
-                    } else {
-                        self.swiftcord.warn("The option \(optionName) is not a role!")
-                    }
-                    break
-                }
-            }
-        }
-
-        return role
-    }
-
-    /// Returns the option data as a `String`.
-    public func getOptionAsString(optionName: String) -> String? {
-        var string: String?
-
-        for option in self.options {
-            if option.name == optionName {
-                if option.type == .string {
-                    string = option.value
-                }
-            }
-        }
-
-        return string
-    }
-
-    public func getOptionAsUser(optionName: String) -> User? {
-        let options = self.data["data"] as! [String: Any]
-
-        var user: User?
-
-        if let optionData = options["resolved"] as! [String: Any]? {
-            for option in self.options {
-                if option.name == optionName {
-                    if option.type == .user {
-                        var userDict = optionData["users"] as! [String: Any]
-                        userDict = userDict[option.value] as! [String: Any]
-                        user = User(self.swiftcord, userDict)
-                        break
-                    }
-                }
-            }
-        }
-
-        return user
+    public func getOption<T>(_ named: String) -> T? {
+        options.get(named)
     }
 }
 
-public struct SlashCommandEventOptions {
-    public let name: String
-    public let type: ApplicationCommandType
-    public let value: String
+public indirect enum SlashCommandEventValue {
+    
+    case subCommand(SlashCommandEventOptions)
+    case subCommandGroup(SlashCommandEventOptions)
+    
+    case integer(Int)
+    case number(Double)
+    case boolean(Bool)
+    case string(String)
+    
+    case user(Snowflake, User?)
+    case channel(Snowflake, Channel?)
+    case role(Snowflake, Role?)
+    case mentionable(Snowflake)
+    
+    case attachment(String, Attachment?)
+    
+    case unknown(String?)
+    
+    init(
+        data: [String: Any],
+        users: [String: User],
+        channels: [String: Channel],
+        roles: [String: Role],
+        attachments: [String: Attachment]
+    ) {
+        let type = ApplicationCommandType(rawValue: data["type"] as! Int)!
 
-    init(data: [String: Any]) {
-        self.name = data["name"] as! String
-        self.type = ApplicationCommandType(rawValue: data["type"] as! Int)!
-
-        if self.type == .int {
-            self.value = String(data["value"] as! Int)
-        } else if self.type == .bool {
-            self.value = String(data["value"] as! Bool)
-        } else {
-            self.value = data["value"] as! String
+        var value: SlashCommandEventValue?
+        switch type {
+        case .int:
+            if let data = data["value"] as? Int {
+                value = .integer(data)
+            }
+        case .number:
+            if let data = data["value"] as? Double {
+                value = .number(data)
+            }
+        case .bool:
+            if let data = data["value"] as? Bool {
+                value = .boolean(data)
+            }
+        case .string:
+            if let data = data["value"] as? String {
+                value = .string(data)
+            }
+        case .user:
+            if let data = data["value"] as? UInt64 {
+                let userData = users[String(data)]
+                value = .user(Snowflake(data), userData)
+            }
+        case .channel:
+            if let data = data["value"] as? UInt64 {
+                let channelData = channels[String(data)]
+                value = .channel(Snowflake(data), channelData)
+            }
+        case .role:
+            if let data = data["value"] as? UInt64 {
+                let roleData = roles[String(data)]
+                value = .role(Snowflake(data), roleData)
+            }
+        case .mentionable:
+            if let data = data["value"] as? UInt64 {
+                value = .mentionable(Snowflake(data))
+            }
+        case .attatchment:
+            if let data = data["value"] as? String {
+                let attachmentData = attachments[data]
+                value = .attachment(data, attachmentData)
+            }
+        case .subCommand:
+            if let data = data["options"] as? [[String: Any]] {
+                value = .subCommand(
+                    SlashCommandEventOptions.create(
+                        data: data,
+                        users: users,
+                        channels: channels,
+                        roles: roles,
+                        attachments: attachments
+                    )
+                )
+            }
+        case .subCommandGroup:
+            if let data = data["options"] as? [[String: Any]] {
+                value = .subCommandGroup(
+                    SlashCommandEventOptions.create(
+                        data: data,
+                        users: users,
+                        channels: channels,
+                        roles: roles,
+                        attachments: attachments
+                    )
+                )
+            }
         }
+        if value == nil {
+            value = .unknown(data["value"] as? String)
+        }
+        
+        self = value!
+    }
+}
+
+public typealias SlashCommandEventOptions = [String: SlashCommandEventValue]
+
+public extension SlashCommandEventOptions {
+    func get<T>(_ named: String) -> T? {
+        guard let value = self[named] else {
+            return nil
+        }
+        
+        switch value {
+        case .subCommand(let value):
+            return value as? T
+        case .subCommandGroup(let value):
+            return value as? T
+        case .integer(let value):
+            return value as? T
+        case .number(let value):
+            return value as? T
+        case .boolean(let value):
+            return value as? T
+        case .string(let value):
+            return value as? T
+        case .user(let value, let value2):
+            return (value as? T) ?? value2 as? T
+        case .channel(let value, let value2):
+            return (value as? T) ?? value2 as? T
+        case .role(let value, let value2):
+            return (value as? T) ?? value2 as? T
+        case .mentionable(let value):
+            return value as? T
+        case .attachment(let value, let value2):
+            return (value as? T) ?? value2 as? T
+        case .unknown(let value):
+            return value as? T
+        }
+    }
+    
+    static func create(
+        data: [[String: Any]],
+        users: [String: User],
+        channels: [String: Channel],
+        roles: [String: Role],
+        attachments: [String: Attachment]
+    ) -> SlashCommandEventOptions {
+        var options: SlashCommandEventOptions = [:]
+        for option in data {
+            if let name = option["name"] as? String,
+               let data = option["data"] as? [String: Any] {
+                options[name] = SlashCommandEventValue(
+                    data: data,
+                    users: users,
+                    channels: channels,
+                    roles: roles,
+                    attachments: attachments
+                )
+            }
+        }
+        return options
     }
 }
