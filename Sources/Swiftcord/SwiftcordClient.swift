@@ -1721,6 +1721,24 @@ open class SwiftcordClient {
 
         return Message(self, data as! [String: Any])
     }
+    
+    /**
+     Sends buttons to channel
+
+     - parameter content: Embed to send as message
+     - parameter channelId: Channel to send message to
+     */
+    public func send(
+        _ content: MessageBuilder,
+        to channelId: Snowflake
+    ) async throws -> Message {
+        let jsonEncoder = JSONEncoder()
+        jsonEncoder.keyEncodingStrategy = .convertToSnakeCase
+        let content = try! jsonEncoder.encode(content)
+
+        let data = try await self.requestWithBodyAsData(.createMessage(channelId), body: content)
+        return Message(self, data as! [String: Any])
+    }
 
     /**
      Sends buttons to channel
