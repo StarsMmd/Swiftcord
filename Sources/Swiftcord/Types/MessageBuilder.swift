@@ -5,8 +5,8 @@ public class MessageBuilder: Encodable {
     public var embeds: [EmbedBuilder]?
     public var components: [ActionRow<Button>]?
 
-    public init(message: String) {
-        self.content = message
+    public init() {
+        self.content = nil
         self.embeds = nil
         self.components = []
     }
